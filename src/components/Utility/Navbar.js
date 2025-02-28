@@ -121,7 +121,7 @@ export default function Navbar() {
 
           <Button
             onClick={() => {
-              router.push("/AllStuffs");
+              router.push("/AddStuff");
             }}
             variant="ghost"
             size="icon"
