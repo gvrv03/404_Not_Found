@@ -4,6 +4,7 @@ import { Toaster } from "react-hot-toast";
 import Navbar from "@/components/Utility/Navbar";
 import { AuthProvider } from "@/Context/AuthContext";
 import Footer from "@/components/Utility/Footer";
+import { Chatbot } from "@/components/chatbot";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,6 +30,7 @@ export default function RootLayout({ children }) {
           <Toaster position="top-center" reverseOrder={false} />
           <div className={`container mx-auto p-2`}>{children}</div>
           <Footer />  
+          <Chatbot/>
         </body>
       </html>
     </AuthProvider>

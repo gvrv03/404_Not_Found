@@ -25,16 +25,6 @@ export function Chatbot() {
   const [showMap, setShowMap] = useState(false)
   const messagesEndRef = useRef(null)
 
-  const foundItem = {
-    id: 101,
-    type: "found",
-    title: "Blue Hydroflask Water Bottle",
-    location: "Science Building",
-    time: "2 hours ago",
-    category: "Water Bottle",
-    position: { x: 45, y: 55 },
-  }
-
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
@@ -56,7 +46,9 @@ export function Chatbot() {
 
     setTimeout(() => {
       let botResponse
-      if (inputValue.toLowerCase().includes("lost") && inputValue.toLowerCase().includes("water bottle")) {
+      const lowerCaseInput = inputValue.toLowerCase()
+
+      if (lowerCaseInput.includes("lost") && lowerCaseInput.includes("water bottle")) {
         botResponse = {
           id: messages.length + 2,
           sender: "bot",
@@ -65,21 +57,21 @@ export function Chatbot() {
           hasMap: true,
         }
         setShowMap(true)
-      } else if (inputValue.toLowerCase().includes("lost")) {
+      } else if (lowerCaseInput.includes("lost")) {
         botResponse = {
           id: messages.length + 2,
           sender: "bot",
           text: "I'm sorry to hear you lost something. Can you provide more details about what you lost? Include color, brand, and where you last saw it.",
           timestamp: new Date().toISOString(),
         }
-      } else if (inputValue.toLowerCase().includes("found")) {
+      } else if (lowerCaseInput.includes("found")) {
         botResponse = {
           id: messages.length + 2,
           sender: "bot",
           text: "Thank you for finding an item! Please report it through our 'Report Found Item' form so we can help return it to its owner.",
           timestamp: new Date().toISOString(),
         }
-      } else if (inputValue.toLowerCase().includes("help")) {
+      } else if (lowerCaseInput.includes("help")) {
         botResponse = {
           id: messages.length + 2,
           sender: "bot",
@@ -114,11 +106,6 @@ export function Chatbot() {
     setIsMinimized(!isMinimized)
   }
 
-  const formatTime = (timestamp) => {
-    const date = new Date(timestamp)
-    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-  }
-
   return (
     <>
       <Button className="fixed bottom-4 right-4 rounded-full shadow-lg z-50" size="icon" onClick={toggleChatbot}>
@@ -141,6 +128,27 @@ export function Chatbot() {
               </Button>
             </div>
           </CardHeader>
+
+          {!isMinimized && (
+            <CardContent className="h-[400px] overflow-y-auto p-3">
+              {messages.map((msg) => (
+                <div key={msg.id} className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"} mb-2`}>
+                  <div className={`p-2 rounded-lg ${msg.sender === "user" ? "bg-blue-500 text-white" : "bg-gray-200"}`}>
+                    {msg.text}
+                  </div>
+                </div>
+              ))}
+              <div ref={messagesEndRef} />
+            </CardContent>
+          )}
+          {!isMinimized && (
+            <CardFooter className="p-3 border-t flex items-center">
+              <Input value={inputValue} onChange={(e) => setInputValue(e.target.value)} onKeyDown={handleKeyDown} placeholder="Type a message..." className="flex-1" />
+              <Button variant="ghost" size="icon" onClick={handleSendMessage}>
+                <Send className="h-5 w-5" />
+              </Button>
+            </CardFooter>
+          )}
         </Card>
       )}
     </>
