@@ -8,7 +8,17 @@ import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
-import { MapPinIcon, TagIcon } from "lucide-react";
+import {
+  CalendarIcon,
+  CircleIcon,
+  FileTextIcon,
+  LinkIcon,
+  ListIcon,
+  MapPinIcon,
+  PhoneIcon,
+  TagIcon,
+} from "lucide-react";
+import moment from "moment/moment";
 
 export default function AllStuffsdata() {
   const [items, setItems] = useState([]);
@@ -50,14 +60,15 @@ export default function AllStuffsdata() {
 function ItemCard({ item }) {
   return (
     <Link href={`/AllStuffs/${item.$id}`} className="block">
-      <Card className="hover:shadow-lg py-0 transition duration-300 rounded-xl overflow-hidden">
-        <div className="relative py-0">
+      <Card className="hover:shadow-lg py-0 transition duration-300 rounded-xl overflow-hidden border border-gray-200 bg-white">
+        {/* Image Section */}
+        <div className="relative">
           <Badge
             className={`absolute top-2 left-2 flex items-center gap-1 px-2 py-1 rounded-md text-white ${
-              item.type === "lost" ? "bg-orange-500" : "bg-green-500"
+              item.Report === "lost" ? "bg-orange-500" : "bg-green-500"
             }`}
           >
-            <TagIcon size={14} />
+            <ListIcon size={14} />
             {item.Report}
           </Badge>
 
@@ -76,12 +87,43 @@ function ItemCard({ item }) {
           )}
         </div>
 
-        <CardContent className="p-4">
-          <h3 className="font-semibold text-lg">{item.ItemName}</h3>
-          <p className="text-sm text-gray-600 flex items-center gap-1">
-            <MapPinIcon size={14} className="text-gray-500" />
+        {/* Card Content */}
+        <CardContent className="p-2 ] space-y-2 ">
+          <h3 className="font-semibold text-lg flex items-center gap-2">
+            <TagIcon size={16} className="text-gray-500" /> {item.ItemName}
+          </h3>
+          <p className="text-sm text-gray-600">
+            {item.Description}
+          </p>
+
+         <div className="grid grid-cols-2 gap-2 mt-2" > <p className="text-sm text-gray-600 flex items-center gap-2">
+            <MapPinIcon size={16} className="text-gray-500" />
             {item.Location}
           </p>
+
+          <p className="text-sm text-gray-600 flex items-center gap-2">
+            <FileTextIcon size={16} className="text-gray-500" />
+            {item.Category}
+          </p>
+
+          <p className="text-sm text-gray-600 flex items-center gap-2">
+            <CalendarIcon size={16} className="text-gray-500" />
+            {moment(item.Date).format("lll")  }
+          </p>
+          {item.Contact && (
+            <p className="text-sm text-gray-600 flex items-center gap-2">
+              <PhoneIcon size={16} className="text-gray-500" />
+              {item.Contact}
+            </p>
+          )}
+
+          <p className="text-sm text-gray-600 flex items-center gap-2">
+            <CircleIcon size={16} className="text-gray-500" />
+            {item.Status ? "Resolved" : "Pending"}
+          </p></div>
+
+
+         
         </CardContent>
       </Card>
     </Link>

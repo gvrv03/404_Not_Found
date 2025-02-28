@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -34,6 +34,8 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import { LocationPicker } from "@/components/Stuff/LocationPicker";
+import { GetSingleDocument } from "@/Services/Appwrite";
+import { StuffCollection } from "@/config/appwrite";
 
 export default function ItemDetailPage() {
   const params = useParams();
@@ -81,12 +83,19 @@ export default function ItemDetailPage() {
         matchScore: 78,
       },
     ],
-  };
+  }
+
+  const getDocsDetails = async()=>{
+    const res = await  GetSingleDocument(StuffCollection)
+  }
+  useEffect(() => {
+
+  }, []);
 
   return (
     <div className="container mx-auto  ">
       <Link
-        href="/search"
+        href="/AllStuffs"
         className="inline-flex items-center text-muted-foreground hover:text-foreground mb-6"
       >
         <ArrowLeft className="h-4 w-4 mr-2" />
