@@ -21,13 +21,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { MapPin, Upload, Calendar } from "lucide-react";
+import { MapPin, Upload, Calendar, X } from "lucide-react";
 import toast from "react-hot-toast";
-import { AddDataToCollection } from "@/Services/Appwrite";
+import { AddDataToCollection, uploadImageAndGetURL } from "@/Services/Appwrite";
 import { StuffCollection } from "@/config/appwrite";
 
 export default function StuffAdd() {
-  const [loading, setloading] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [imagePreview, setImagePreview] = useState(null);
+  console.log(imagePreview);
+
   const [formData, setFormData] = useState({
     Report: "found",
     ItemName: "",
@@ -35,28 +38,55 @@ export default function StuffAdd() {
     Location: "",
     Date: "",
     Description: "",
-    ItemImage: null,
+    ItemImage: "",
     Contact: "",
   });
 
   const handleChange = (e) => {
-    const { id, value, type, files } = e.target;
+    const { id, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [id]: type === "file" ? files[0] : value,
+      [id]: value,
     }));
   };
 
-  const handleSubmit = async (e) => {
+  // Handle Image Upload
+  // Handle Image Upload
+  const handleImageUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
     try {
-      setloading(true);
-      e.preventDefault();
+      setLoading(true);
+      const toastId = toast.loading("Uploading image...");
+      const imageUrl = await uploadImageAndGetURL(file);
+
+      setFormData((prev) => ({
+        ...prev,
+        ItemImage: imageUrl,
+      }));
+      setImagePreview(imageUrl);
+
+      toast.dismiss(toastId);
+      toast.success("Image uploaded successfully!");
+    } catch (error) {
+      toast.dismiss();
+      toast.error("Image upload failed: " + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
       await AddDataToCollection(StuffCollection, formData);
       toast.success("Report submitted successfully");
     } catch (error) {
       toast.error(error.message);
     } finally {
-      setloading(false);
+      setLoading(false);
     }
   };
 
@@ -71,7 +101,7 @@ export default function StuffAdd() {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form className="space-y-6">
           <RadioGroup
             value={formData.Report}
             onValueChange={(value) =>
@@ -160,31 +190,55 @@ export default function StuffAdd() {
             />
           </div>
 
+          {/* Image Upload */}
           <div className="space-y-2">
             <Label>Upload Image (optional)</Label>
             <div className="border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center text-center">
-              <Upload className="h-8 w-8 text-muted-foreground mb-2" />
-              <p className="text-sm text-muted-foreground mb-1">
-                Drag and drop an image, or click to browse
-              </p>
-              <p className="text-xs text-muted-foreground">
-                PNG, JPG or WEBP (max. 5MB)
-              </p>
+              {imagePreview ? (
+                <div className="relative">
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                    className="w-32 h-32 object-cover rounded-lg"
+                  />
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="absolute top-0 right-0"
+                    onClick={() => {
+                      setImagePreview(null);
+                      setFormData((prev) => ({ ...prev, ItemImage: "" }));
+                    }}
+                  >
+                    <X className="w-5 h-5 text-red-500" />
+                  </Button>
+                </div>
+              ) : (
+                <>
+                  <Upload className="h-8 w-8 text-muted-foreground mb-2" />
+                  <p className="text-sm text-muted-foreground mb-1">
+                    Drag and drop an image, or click to browse
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    PNG, JPG or WEBP (max. 5MB)
+                  </p>
+                </>
+              )}
               <Input
                 type="file"
                 id="ItemImage"
                 accept="image/*"
-                className="hidden"
-                onChange={handleChange}
+                // className="hidden"
+                onChange={handleImageUpload}
               />
-              <Button
+              {/* <Button
                 variant="outline"
                 size="sm"
                 className="mt-4"
                 onClick={() => document.getElementById("ItemImage")?.click()}
               >
                 Select Image
-              </Button>
+              </Button> */}
             </div>
           </div>
 
@@ -204,7 +258,12 @@ export default function StuffAdd() {
               </p>
             </div>
           )}
-          <Button className=" cursor-pointer w-full" type="submit">
+          <Button
+            onClick={handleSubmit}
+            className="w-full"
+            type="submit"
+            disabled={loading}
+          >
             {loading ? "Submitting..." : "Submit Report"}
           </Button>
         </form>

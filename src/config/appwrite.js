@@ -13,5 +13,5 @@ export const AppwriteDatabase = new Databases(client);
 export const StuffCollection = process.env.NEXT_PUBLIC_STUFF_DETAIL;
 
 export const StorageBucket = new Storage(client);
-export const StuffImages = process.env.NEXT_PUBLIC_STUFF_IMAGES;
+export const StuffImagesBucket = process.env.NEXT_PUBLIC_STUFF_IMAGES;
 export { ID } from "appwrite";

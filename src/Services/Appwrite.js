@@ -1,6 +1,12 @@
 import { ID, Permission, Role } from "appwrite";
 
-const { AppwriteDatabase, client, UserAccount } = require("@/config/appwrite");
+const {
+  AppwriteDatabase,
+  client,
+  UserAccount,
+  StorageBucket,
+  StuffImagesBucket,
+} = require("@/config/appwrite");
 
 export const ListCollectionData = async (collectionID, queries) => {
   try {
@@ -36,7 +42,7 @@ export const AddDataToCollection = async (collectionID, data) => {
       process.env.NEXT_PUBLIC_DATABASEID,
       collectionID,
       SLUGID,
-      data,
+      data
       // [
       //   Permission.update(Role.user(SLUGID)),
       //   Permission.delete(Role.user(SLUGID)),
@@ -80,4 +86,14 @@ export const verifyOTP = async (user, otp) => {
 
 export const updateUser = async (userName) => {
   await UserAccount.updateName(userName);
+};
+
+export const uploadImageAndGetURL = async (file) => {
+  const response = await StorageBucket.createFile(
+    StuffImagesBucket,
+    ID.unique(),
+    file
+  );
+  const fileUrl = StorageBucket.getFilePreview(StuffImagesBucket, response.$id);
+  return fileUrl;
 };
