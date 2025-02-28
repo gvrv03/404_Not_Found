@@ -16,7 +16,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/Context/AuthContext";
 
 const menuItems = [
-  { title: "Birthday Decorations", href: "/birthday-decorations" },
+  { title: "How It Works", href: "/how-it-works" },
 ];
 
 export default function Navbar() {

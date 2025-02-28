@@ -25,6 +25,7 @@ import { MapPin, Upload, Calendar, X } from "lucide-react";
 import toast from "react-hot-toast";
 import { AddDataToCollection, uploadImageAndGetURL } from "@/Services/Appwrite";
 import { StuffCollection } from "@/config/appwrite";
+import { LocationPicker } from "./LocationPicker";
 
 export default function StuffAdd() {
   const [loading, setLoading] = useState(false);
@@ -41,7 +42,8 @@ export default function StuffAdd() {
     ItemImage: "",
     Contact: "",
   });
-
+const [XCordinate, setXCordinate] = useState(50);
+const [YCordinate, setYCordinate] = useState(50);
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData((prev) => ({
@@ -81,7 +83,7 @@ export default function StuffAdd() {
     e.preventDefault();
     try {
       setLoading(true);
-      await AddDataToCollection(StuffCollection, formData);
+      await AddDataToCollection(StuffCollection, {...formData, XCordinate:parseInt(XCordinate), YCordinate: parseInt( YCordinate)});  
       toast.success("Report submitted successfully");
     } catch (error) {
       toast.error(error.message);
@@ -89,7 +91,6 @@ export default function StuffAdd() {
       setLoading(false);
     }
   };
-
   return (
     <Card className="w-full md:max-w-[50%] mx-auto">
       <CardHeader>
@@ -152,15 +153,15 @@ export default function StuffAdd() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="Location">Location</Label>
-              <div className="relative">
-                <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+              <div className="flex gap-2 relative">
                 <Input
                   id="Location"
                   placeholder="e.g. Library, 2nd floor"
-                  className="pl-10"
+                  className="pl-5"
                   value={formData.Location}
                   onChange={handleChange}
                 />
+               
               </div>
             </div>
 
@@ -178,6 +179,7 @@ export default function StuffAdd() {
               </div>
             </div>
           </div>
+ <LocationPicker setXCordinate={setXCordinate} setYCordinate={setYCordinate} />
 
           <div className="space-y-2">
             <Label htmlFor="Description">Description</Label>

@@ -3,14 +3,14 @@
 import { useState } from "react";
 import { MapPin } from "lucide-react";
 
-export function LocationPicker() {
+export function LocationPicker({XCordinate=50,YCordinates=50,setXCordinate,setYCordinate}) {
   const [isDragging, setIsDragging] = useState(false);
-  const [position, setPosition] = useState({ x: 50, y: 50 });
+  const [position, setPosition] = useState({ x: XCordinate, y: YCordinates });
 
   const handleMouseDown = () => {
     setIsDragging(true);
   };
-
+  
   const handleMouseUp = () => {
     setIsDragging(false);
   };
@@ -25,12 +25,14 @@ export function LocationPicker() {
         x: Math.max(0, Math.min(100, x)),
         y: Math.max(0, Math.min(100, y)),
       });
+      setXCordinate(Math.max(0, Math.min(100, x)))
+      setYCordinate(Math.max(0, Math.min(100, y)))
     }
   };
 
   return (
     <div
-      className="relative w-full h-full bg-[url('/placeholder.svg?height=600&width=800')] bg-cover bg-center cursor-move"
+      className="relative w-[100%] h-[100%]  rounded-md bg-cover bg-center cursor-move"
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
