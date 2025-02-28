@@ -24,7 +24,7 @@ export default function RootLayout({ children }) {
     <AuthProvider>
       <html lang="en">
         <body>
-          <Navbar />
+          {/* <Navbar /> */}
           <Toaster position="top-center" reverseOrder={false} />
           <div className={`container mx-auto p-2`}>{children}</div>
         </body>
