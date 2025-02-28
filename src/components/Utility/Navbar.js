@@ -25,6 +25,7 @@ import { useAuth } from "@/Context/AuthContext";
 const menuItems = [
   { title: "How It Works", href: "/how-it-works" },
   { title: "All Founds/Losts", href: "/AllStuffs" },
+  { title: "Add Found/Lost Item ", href: "/AddStuff" },
   { title: "Profile", href: "/EditProfile" },
 ];
 
@@ -118,6 +119,19 @@ export default function Navbar() {
           </Button>
 
 
+          <Button
+            onClick={() => {
+              router.push("/AllStuffs");
+            }}
+            variant="ghost"
+            size="icon"
+            className="flex gap-2 w-full px-2"
+          >
+            <SearchCheck className="" />
+            <p className="md:flex hidden">Add Founds/Lost Items</p>
+          </Button>
+
+
           <div className="relative" ref={dropdownRef}>
             <Button
               onClick={() => {
@@ -164,16 +178,6 @@ const UserDropdown = ({ setIsDropdownOpen }) => {
           Complete your profile
         </button>
       </div>
-      <button
-        onClick={() => {
-          router.push("/AddStuff");
-          setIsDropdownOpen(false);
-        }}
-        className="flex w-full items-center space-x-2 p-2 text-sm  hover:bg-gray-100 rounded-md"
-      >
-        <SearchCheck className="h-4 w-4" />
-        <span>Found/Lost Items</span>
-      </button>{" "}
       <button
         onClick={() => {
           logoutUser();

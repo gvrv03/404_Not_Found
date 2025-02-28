@@ -38,7 +38,7 @@ const EditProfile = () => {
   };
 
   return (
-    <div className=" md:max-w-[50%] mx-auto flex items-center justify-center ">
+    <div className=" md:max-w-[50%] h-[70vh] mx-auto flex items-center justify-center ">
       <Card className="p-2 rounded-md flex-col flex gap-2 w-full ">
         <h3 className="font-semibold text-lg">Edit Profile</h3>
         <CardContent className="p-0">
