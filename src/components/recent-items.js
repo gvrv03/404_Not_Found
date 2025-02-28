@@ -33,12 +33,27 @@ const RecentItems = () => {
     fetchItems();
   }, []);
 
-  if (loading) return <p className="text-center">Loading...</p>;
+  if (loading)
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+        {[...Array(4)].map((_, index) => (
+          <Card key={index} className="animate-pulse">
+            <CardContent className="h-40 bg-gray-300 rounded-md" />
+            <CardFooter className="flex flex-col gap-2 p-4">
+              <div className="h-5 w-3/4 bg-gray-300 rounded" />
+              <div className="h-4 w-1/2 bg-gray-300 rounded" />
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
+    );
+
   if (error) return <p className="text-center text-red-500">{error}</p>;
 
   return (
     <>
       <h2 className="py-5 text-2xl font-semibold">Recently Reported Items</h2>
+      {items.length < 1 && "No Items Found"}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
         {items.map((item) => (
           <ItemCard key={item.$id} item={item} />

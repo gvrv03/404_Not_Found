@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { ListCollectionData } from "@/Services/Appwrite";
 import { StuffCollection } from "@/config/appwrite";
 import Link from "next/link";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import {
@@ -30,7 +30,8 @@ export default function AllStuffsdata() {
     async function fetchItems() {
       try {
         const response = await ListCollectionData(StuffCollection, [
-          Query.orderDesc()
+          Query.orderDesc(),
+          Query.limit(4),
         ]);
         setItems(response.documents);
       } catch (error) {
@@ -42,8 +43,30 @@ export default function AllStuffsdata() {
     }
     fetchItems();
   }, []);
+  if (loading)
+    return (
+      <>
+        <h2 className="py-5 text-2xl font-semibold">Recently Reported Items</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+          {[...Array(4)].map((_, index) => (
+            <Card key={index} className="animate-pulse">
+              <div className="h-48 bg-gray-300 rounded-t-xl" />
+              <CardContent className="p-2 space-y-2">
+                <div className="h-5 w-3/4 bg-gray-300 rounded" />
+                <div className="h-4 w-1/2 bg-gray-300 rounded" />
+              </CardContent>
+              <CardFooter className="grid grid-cols-2 gap-2 p-2">
+                <div className="h-4 w-full bg-gray-300 rounded" />
+                <div className="h-4 w-full bg-gray-300 rounded" />
+                <div className="h-4 w-full bg-gray-300 rounded" />
+                <div className="h-4 w-full bg-gray-300 rounded" />
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
+      </>
+    );
 
-  if (loading) return <p className="text-center">Loading...</p>;
   if (error) return <p className="text-center text-red-500">{error}</p>;
 
   return (
@@ -81,7 +104,7 @@ export function ItemCard({ item }) {
               alt={item.ItemName}
               width={300}
               height={200}
-              className="w-full h-48 object-cover rounded-t-xl"
+              className="w-full  object-cover rounded-t-xl"
             />
           ) : (
             <div className="w-full h-48 bg-gray-200 flex items-center justify-center text-gray-500">

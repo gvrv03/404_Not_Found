@@ -152,6 +152,17 @@ export default function StuffAdd() {
                 <SelectItem value="personal-item">Personal Item</SelectItem>
                 <SelectItem value="id-cards">ID/Cards</SelectItem>
                 <SelectItem value="clothing">Clothing</SelectItem>
+                <SelectItem value="accessories">Accessories</SelectItem>
+                <SelectItem value="wallets-bags">Wallets/Bags</SelectItem>
+                <SelectItem value="documents">Documents</SelectItem>
+                <SelectItem value="keys">Keys</SelectItem>
+                <SelectItem value="jewelry">Jewelry</SelectItem>
+                <SelectItem value="sports-equipment">
+                  Sports Equipment
+                </SelectItem>
+                <SelectItem value="books">Books</SelectItem>
+                <SelectItem value="toys">Toys</SelectItem>
+                <SelectItem value="medical-items">Medical Items</SelectItem>
                 <SelectItem value="other">Other</SelectItem>
               </SelectContent>
             </Select>
