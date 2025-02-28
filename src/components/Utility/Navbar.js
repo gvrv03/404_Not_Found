@@ -1,12 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import {
-  Menu,
-  Search,
-  User,
-  LogOut,
-} from "lucide-react";
+import { Menu, Search, User, LogOut, SearchCheck } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -137,6 +132,16 @@ const UserDropdown = ({ setIsDropdownOpen }) => {
           Complete your profile
         </button>
       </div>
+      <button
+        onClick={() => {
+          router.push("/AddStuff");
+          setIsDropdownOpen(false);
+        }}
+        className="flex w-full items-center space-x-2 p-2 text-sm  hover:bg-gray-100 rounded-md"
+      >
+        <SearchCheck className="h-4 w-4" />
+        <span>Found/Lost Items</span>
+      </button>{" "}
       <button
         onClick={() => {
           logoutUser();

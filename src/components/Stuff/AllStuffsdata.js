@@ -8,6 +8,7 @@ import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
+import { MapPinIcon, TagIcon } from "lucide-react";
 
 export default function AllStuffsdata() {
   const [items, setItems] = useState([]);
@@ -34,8 +35,10 @@ export default function AllStuffsdata() {
 
   return (
     <div className="container mx-auto">
-      <h1 className="text-3xl font-bold py-5 mb-2">Lost & Found Items</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+      <h1 className="text-xl md:text-3xl font-bold md:py-5 mb-2">
+        Lost & Found Items
+      </h1>
+      <div className="grid grid-cols-2  md:grid-cols-4 gap-2">
         {items.map((item) => (
           <ItemCard key={item.$id} item={item} />
         ))}
@@ -47,26 +50,38 @@ export default function AllStuffsdata() {
 function ItemCard({ item }) {
   return (
     <Link href={`/AllStuffs/${item.$id}`} className="block">
-      <Card className="hover:shadow-md transition duration-300">
-        <div className="relative">
+      <Card className="hover:shadow-lg py-0 transition duration-300 rounded-xl overflow-hidden">
+        <div className="relative py-0">
           <Badge
-            className={item.type === "lost" ? "bg-orange-500" : "bg-green-500"}
+            className={`absolute top-2 left-2 flex items-center gap-1 px-2 py-1 rounded-md text-white ${
+              item.type === "lost" ? "bg-orange-500" : "bg-green-500"
+            }`}
           >
+            <TagIcon size={14} />
             {item.Report}
           </Badge>
-          {item?.ItemImage && (
+
+          {item?.ItemImage ? (
             <img
               src={item.ItemImage}
               alt={item.ItemName}
               width={300}
               height={200}
-              className="w-full h-48 object-cover"
+              className="w-full h-48 object-cover rounded-t-xl"
             />
+          ) : (
+            <div className="w-full h-48 bg-gray-200 flex items-center justify-center text-gray-500">
+              No Image Available
+            </div>
           )}
         </div>
-        <CardContent>
-          <h3 className="font-semibold">{item.ItemName}</h3>
-          <p className="text-sm text-gray-600">{item.Location}</p>
+
+        <CardContent className="p-4">
+          <h3 className="font-semibold text-lg">{item.ItemName}</h3>
+          <p className="text-sm text-gray-600 flex items-center gap-1">
+            <MapPinIcon size={14} className="text-gray-500" />
+            {item.Location}
+          </p>
         </CardContent>
       </Card>
     </Link>
