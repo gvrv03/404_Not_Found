@@ -95,7 +95,7 @@ const PhoneAuth = () => {
                   Enter Verification Code
                 </h3>
                 <h5 className="text-center text-sm py-1">
-                  We've sent a verification code to{" "}
+                  We have sent a verification code to{" "}
                   <span className="font-semibold text-blue-500">{phone}</span>
                 </h5>
               </div>

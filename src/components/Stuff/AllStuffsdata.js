@@ -47,7 +47,7 @@ export default function AllStuffsdata() {
     return (
       <>
         <h2 className="py-5 text-2xl font-semibold">Recently Reported Items</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1  md:grid-cols-4 gap-6">
           {[...Array(4)].map((_, index) => (
             <Card key={index} className="animate-pulse">
               <div className="h-48 bg-gray-300 rounded-t-xl" />
@@ -74,7 +74,7 @@ export default function AllStuffsdata() {
       <h1 className="text-xl md:text-3xl font-bold md:py-5 mb-2">
         Lost & Found Items
       </h1>
-      <div className="grid grid-cols-2  md:grid-cols-4 gap-2">
+      <div className="grid grid-cols-1  md:grid-cols-4 gap-2">
         {items.map((item) => (
           <ItemCard key={item.$id} item={item} />
         ))}
@@ -86,9 +86,9 @@ export default function AllStuffsdata() {
 export function ItemCard({ item }) {
   return (
     <Link href={`/AllStuffs/${item.$id}`} className="block">
-      <Card className="hover:shadow-lg py-0 transition duration-300 rounded-xl overflow-hidden border border-gray-200 bg-white">
+      <Card className="hover:shadow-lg h-[430px] py-0 transition justify-between duration-300 rounded-xl overflow-hidden border border-gray-200 bg-white">
         {/* Image Section */}
-        <div className="relative">
+        <div className=" relative">
           <Badge
             className={`absolute top-2 left-2 flex items-center gap-1 px-2 py-1 rounded-md text-white ${
               item.Report === "lost" ? "bg-orange-500" : "bg-green-500"
@@ -99,13 +99,15 @@ export function ItemCard({ item }) {
           </Badge>
 
           {item?.ItemImage ? (
-            <img
-              src={item.ItemImage}
-              alt={item.ItemName}
-              width={300}
-              height={200}
-              className="w-full  object-cover rounded-t-xl"
-            />
+            <div className="h-52">
+              <img
+                src={item.ItemImage}
+                alt={item.ItemName}
+                width={300}
+                height={200}
+                className=" h-full w-full object-cover rounded-t-xl"
+              />
+            </div>
           ) : (
             <div className="w-full h-48 bg-gray-200 flex items-center justify-center text-gray-500">
               No Image Available
@@ -119,37 +121,37 @@ export function ItemCard({ item }) {
             <TagIcon size={16} className="text-gray-500" /> {item.ItemName}
           </h3>
           <p className="text-sm text-gray-600">
-            {item.Description}
+            {" "}
+            {item.Description.length > 100
+              ? `${item.Description.substring(0, 100)}...`
+              : item.Description}
           </p>
 
-         <div className="grid grid-cols-2 gap-2 mt-2" > <p className="text-sm text-gray-600 flex items-center gap-2">
-            <MapPinIcon size={16} className="text-gray-500" />
-            {item.Location}
-          </p>
-
-          <p className="text-sm text-gray-600 flex items-center gap-2">
-            <FileTextIcon size={16} className="text-gray-500" />
-            {item.Category}
-          </p>
-
-          <p className="text-sm text-gray-600 flex items-center gap-2">
-            <CalendarIcon size={16} className="text-gray-500" />
-            {moment(item.Date).format("lll")  }
-          </p>
-          {item.Contact && (
+          <div className="grid grid-cols-2 gap-2 mt-2">
+            {" "}
             <p className="text-sm text-gray-600 flex items-center gap-2">
-              <PhoneIcon size={16} className="text-gray-500" />
-              {item.Contact}
+              <MapPinIcon size={16} className="text-gray-500" />
+              {item.Location}
             </p>
-          )}
-
-          <p className="text-sm text-gray-600 flex items-center gap-2">
-            <CircleIcon size={16} className="text-gray-500" />
-            {item.Status ? "Resolved" : "Pending"}
-          </p></div>
-
-
-         
+            <p className="text-sm text-gray-600 flex items-center gap-2">
+              <FileTextIcon size={16} className="text-gray-500" />
+              {item.Category}
+            </p>
+            <p className="text-sm text-gray-600 flex items-center gap-2">
+              <CalendarIcon size={16} className="text-gray-500" />
+              {moment(item.Date).format("lll")}
+            </p>
+            {item.Contact && (
+              <p className="text-sm text-gray-600 flex items-center gap-2">
+                <PhoneIcon size={16} className="text-gray-500" />
+                {item.Contact}
+              </p>
+            )}
+            <p className="text-sm text-gray-600 flex items-center gap-2">
+              <CircleIcon size={16} className="text-gray-500" />
+              {item.Status ? "Resolved" : "Pending"}
+            </p>
+          </div>
         </CardContent>
       </Card>
     </Link>

@@ -75,7 +75,7 @@ export default function HowItWorksPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground">
-                  When a match is found, you'll be notified immediately. Use our secure messaging system to connect with
+                  When a match is found, you will be notified immediately. Use our secure messaging system to connect with
                   the finder and arrange to recover your item.
                 </p>
               </CardContent>
