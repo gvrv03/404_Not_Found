@@ -60,7 +60,7 @@ export default function AllStuffsdata() {
   );
 }
 
-function ItemCard({ item }) {
+export function ItemCard({ item }) {
   return (
     <Link href={`/AllStuffs/${item.$id}`} className="block">
       <Card className="hover:shadow-lg py-0 transition duration-300 rounded-xl overflow-hidden border border-gray-200 bg-white">
