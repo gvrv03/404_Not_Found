@@ -19,6 +19,7 @@ import {
   TagIcon,
 } from "lucide-react";
 import moment from "moment/moment";
+import { Query } from "appwrite";
 
 export default function AllStuffsdata() {
   const [items, setItems] = useState([]);
@@ -28,7 +29,9 @@ export default function AllStuffsdata() {
   useEffect(() => {
     async function fetchItems() {
       try {
-        const response = await ListCollectionData(StuffCollection, []);
+        const response = await ListCollectionData(StuffCollection, [
+          Query.orderDesc()
+        ]);
         setItems(response.documents);
       } catch (error) {
         console.error("Failed to fetch items:", error);

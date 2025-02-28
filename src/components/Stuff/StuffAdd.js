@@ -26,6 +26,7 @@ import toast from "react-hot-toast";
 import { AddDataToCollection, uploadImageAndGetURL } from "@/Services/Appwrite";
 import { StuffCollection } from "@/config/appwrite";
 import { LocationPicker } from "./LocationPicker";
+import { useAuth } from "@/Context/AuthContext";
 
 export default function StuffAdd() {
   const [loading, setLoading] = useState(false);
@@ -42,8 +43,9 @@ export default function StuffAdd() {
     ItemImage: "",
     Contact: "",
   });
-const [XCordinate, setXCordinate] = useState(50);
-const [YCordinate, setYCordinate] = useState(50);
+  const { user } = useAuth();
+  const [XCordinate, setXCordinate] = useState(50);
+  const [YCordinate, setYCordinate] = useState(50);
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData((prev) => ({
@@ -83,7 +85,12 @@ const [YCordinate, setYCordinate] = useState(50);
     e.preventDefault();
     try {
       setLoading(true);
-      await AddDataToCollection(StuffCollection, {...formData, XCordinate:parseInt(XCordinate), YCordinate: parseInt( YCordinate)});  
+      await AddDataToCollection(StuffCollection, {
+        ...formData,
+        XCordinate: parseInt(XCordinate),
+        YCordinate: parseInt(YCordinate),
+        CreatedBy: user?.userData?.$id,
+      });
       toast.success("Report submitted successfully");
     } catch (error) {
       toast.error(error.message);
@@ -161,7 +168,6 @@ const [YCordinate, setYCordinate] = useState(50);
                   value={formData.Location}
                   onChange={handleChange}
                 />
-               
               </div>
             </div>
 
@@ -179,8 +185,15 @@ const [YCordinate, setYCordinate] = useState(50);
               </div>
             </div>
           </div>
- <LocationPicker setXCordinate={setXCordinate} setYCordinate={setYCordinate} />
-
+          <div className="border  p-5 h-[30vh] rounded-md">
+            <LocationPicker
+              setXCordinate={setXCordinate}
+              setYCordinate={setYCordinate}
+            />
+            <div className="p-2 rounded-md text-xs">
+              Campus Map - Click and drag the pin to mark location
+            </div>
+          </div>
           <div className="space-y-2">
             <Label htmlFor="Description">Description</Label>
             <Textarea

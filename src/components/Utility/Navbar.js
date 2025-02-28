@@ -1,7 +1,14 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Menu, Search, User, LogOut, SearchCheck } from "lucide-react";
+import {
+  Menu,
+  Search,
+  User,
+  LogOut,
+  SearchCheck,
+  Workflow,
+} from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,6 +24,8 @@ import { useAuth } from "@/Context/AuthContext";
 
 const menuItems = [
   { title: "How It Works", href: "/how-it-works" },
+  { title: "All Founds/Losts", href: "/AllStuffs" },
+  { title: "Profile", href: "/EditProfile" },
 ];
 
 export default function Navbar() {
@@ -54,7 +63,7 @@ export default function Navbar() {
               <SheetTitle>Menu</SheetTitle>
             </SheetHeader>
 
-            <nav className="mt-4 flex flex-col mx-5">
+            <nav className="flex flex-col mx-5">
               {menuItems.map((item) => (
                 <Link
                   key={item.href}
@@ -69,9 +78,7 @@ export default function Navbar() {
         </Sheet>
 
         <Link href="/" className="mr-6 flex items-center ">
-          <span className="text-base md:text-2xl font-bold text-primary">
-            FoundUs
-          </span>
+          <img src="/FondUs.png" className="w-10" />
         </Link>
 
         <div className="flex flex-1 items-center space-x-2">
@@ -86,6 +93,31 @@ export default function Navbar() {
         </div>
 
         <div className="ml-auto relative gap-2 flex items-center">
+          <Button
+            onClick={() => {
+              router.push("/how-it-works");
+            }}
+            variant="ghost"
+            size="icon"
+            className="flex gap-2 w-full px-2"
+          >
+            <Workflow className="" />
+            <p className="md:flex hidden">How It Works</p>
+          </Button>
+
+          <Button
+            onClick={() => {
+              router.push("/AllStuffs");
+            }}
+            variant="ghost"
+            size="icon"
+            className="flex gap-2 w-full px-2"
+          >
+            <Search className="" />
+            <p className="md:flex hidden">All Founds/Lost Items</p>
+          </Button>
+
+
           <div className="relative" ref={dropdownRef}>
             <Button
               onClick={() => {

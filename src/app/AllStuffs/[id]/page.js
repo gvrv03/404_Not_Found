@@ -35,6 +35,7 @@ import { GetSingleDocument } from "@/Services/Appwrite";
 import { StuffCollection } from "@/config/appwrite";
 import moment from "moment/moment";
 import StuffDetailsTabs from "@/components/Stuff/StuffDetailsTabs";
+import PersonDetails from "@/components/Stuff/PersonDetails";
 
 export default async function ItemDetailPage({ params }) {
   const staffID = await params.id;
@@ -77,9 +78,10 @@ export default async function ItemDetailPage({ params }) {
                 </div>
               </div>
             </div>
-            <p>{staffData.Description}</p>
           <StuffDetailsTabs item={staffData}/>
           </div>
+
+          <PersonDetails staffData={staffData}/>
         </div>
 
 
