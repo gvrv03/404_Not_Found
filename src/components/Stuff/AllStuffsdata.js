@@ -31,7 +31,6 @@ export default function AllStuffsdata() {
       try {
         const response = await ListCollectionData(StuffCollection, [
           Query.orderDesc(),
-          Query.limit(4),
         ]);
         setItems(response.documents);
       } catch (error) {

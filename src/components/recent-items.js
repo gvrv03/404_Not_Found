@@ -52,7 +52,10 @@ const RecentItems = () => {
 
   return (
     <>
-      <h2 className="py-5 text-2xl font-semibold">Recently Reported Items</h2>
+      <div className="flex pb-2 mt-5 border-b mb-2 border-gray-200 justify-between items-center">
+        <h2 className=" text-2xl font-semibold">Recently Reported Items</h2>
+        <Link href="/AllStuffs">See All</Link>
+      </div>{" "}
       {items.length < 1 && "No Items Found"}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
         {items.map((item) => (
